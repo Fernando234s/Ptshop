@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+    content="width=device-width, initial-scale=1">
+    <title>Tutores</title>
+    <link rel="stylesheet" href="/style.css">
+</head>
+
+<body>
+
+    <header>
+        <h2>🐾 Clínica Veterinária</h2>
+        <a href="/principal">Voltar</a>
+    </header>
+
+    <main>
+
+        <h1>Gerenciamento de Tutores</h1>
+
+        <div class="card">
+
+            <h2>Cadastrar ou editar tutor</h2>
+
+            <form id="formulario"
+            action="/tutores/salvar" method="POST">
+
+                <input type="hidden" name="id">
+
+                <div class="campos">
+
+                    <input name="nome"
+                    placeholder="Nome completo" required>
+
+                    <input name="cpf"
+                    placeholder="CPF" maxlength="14" required>
+
+                    <input name="telefone"
+                    placeholder="Telefone">
+
+                    <input name="endereco"
+                    placeholder="Endereço">
+
+                </div>
+
+                <br>
+
+                <button>Salvar</button>
+
+                <button type="button" class="secundario"
+                onclick="location.reload()">Cancelar</button>
+
+            </form>
+
+        </div>
+
+        <div class="card">
+
+            <h2>Tutores cadastrados</h2>
+
+            <form class="campos"
+            onsubmit="event.preventDefault(); listar();">
+
+                <input id="busca"
+                placeholder="Pesquisar pelo nome">
+
+                <button>Buscar</button>
+
+            </form>
+
+            <br>
+
+            <div class="tabela">
+
+                <table>
+
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Nome</th>
+                            <th>CPF</th>
+                            <th>Telefone</th>
+                            <th>Endereço</th>
+                            <th>Ações</th>
+                        </tr>
+                    </thead>
+
+                    <tbody id="lista"></tbody>
+
+                </table>
+
+            </div>
+
+        </div>
+
+    </main>
+
+    <script>
+
+        async function listar() {
+
+            const busca = document.getElementById("busca").value;
+
+            const res = await fetch(
+                "/api/tutores?busca=" + encodeURIComponent(busca)
+            );
+
+            if (res.redirected) {
+                location.href = "/";
+                return;
+            }
+
+            const tutores = await res.json();
+
+            const lista = document.getElementById("lista");
+
+            lista.innerHTML = "";
+
+            tutores.forEach(t => {
+
+                const linha = lista.insertRow();
+
+                linha.insertCell().textContent = t.id_tutor;
+                linha.insertCell().textContent = t.nome;
+                linha.insertCell().textContent = t.cpf;
+                linha.insertCell().textContent = t.telefone;
+                linha.insertCell().textContent = t.endereco;
+
+                const botao = document.createElement("button");
+
+                botao.textContent = "Editar";
+
+                botao.onclick = () => editar(t);
+
+                linha.insertCell().appendChild(botao);
+
+            });
+        }
+
+        function editar(t) {
+
+            const f = document.getElementById("formulario");
+
+            f.elements.id.value = t.id_tutor;
+            f.elements.nome.value = t.nome;
+            f.elements.cpf.value = t.cpf || "";
+            f.elements.telefone.value = t.telefone || "";
+            f.elements.endereco.value = t.endereco || "";
+
+            window.scrollTo(0, 0);
+        }
+
+        listar();
+
+    </script>
+
+</body>
+</html>

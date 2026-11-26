@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+    content="width=device-width, initial-scale=1">
+    <title>Tela Principal</title>
+    <link rel="stylesheet" href="/style.css">
+</head>
+
+<body>
+
+    <header>
+
+        <h2>🐾 Clínica Veterinária</h2>
+
+        <form action="/sair" method="POST">
+            <button class="sair">Sair</button>
+        </form>
+
+    </header>
+
+    <main>
+
+        <h1>Bem-vindo, <span id="nome"></span>!</h1>
+
+        <p>Selecione uma funcionalidade para continuar.</p>
+
+        <div class="menu">
+
+            <a href="/tutores" class="opcao">
+                <div class="icone">👥</div>
+                <h2>Tutores</h2>
+                <p>Cadastre e gerencie os tutores.</p>
+            </a>
+
+            <a href="/pets" class="opcao">
+                <div class="icone">🐶</div>
+                <h2>Pets</h2>
+                <p>Cadastre e consulte os animais.</p>
+            </a>
+
+            <a href="/agendamentos" class="opcao">
+                <div class="icone">📅</div>
+                <h2>Agendamentos</h2>
+                <p>Gerencie as consultas veterinárias.</p>
+            </a>
+
+        </div>
+
+    </main>
+
+    <script>
+
+        fetch("/usuario")
+            .then(res => {
+
+                if (res.redirected) {
+                    location.href = "/";
+                    return null;
+                }
+
+                return res.json();
+            })
+            .then(dados => {
+
+                if (!dados) return;
+
+                document.getElementById("nome").textContent =
+                    dados.nome;
+
+                setTimeout(() => {
+                    location.href = "/";
+                }, Math.max(0, dados.expiracao - Date.now()));
+
+            });
+
+    </script>
+
+</body>
+</html>

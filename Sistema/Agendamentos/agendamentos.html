@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+    content="width=device-width, initial-scale=1">
+    <title>Agendamentos</title>
+    <link rel="stylesheet" href="/style.css">
+</head>
+
+<body>
+
+    <header>
+        <h2>🐾 Clínica Veterinária</h2>
+        <a href="/principal">Voltar</a>
+    </header>
+
+    <main>
+
+        <h1>Gerenciamento de Agendamentos</h1>
+
+        <div class="card">
+
+            <h2>Novo agendamento</h2>
+
+            <form action="/agendamentos/cadastrar" method="POST">
+
+                <div class="campos">
+
+                    <select name="id_pet" id="pet" required>
+                        <option value="">Selecione o pet</option>
+                    </select>
+
+                    <input type="date" name="data" required>
+
+                    <input type="time" name="horario" required>
+
+                    <input name="descricao"
+                    placeholder="Descrição da consulta">
+
+                </div>
+
+                <br>
+
+                <button>Agendar consulta</button>
+
+            </form>
+
+        </div>
+
+        <div class="card">
+
+            <h2>Alterar data</h2>
+
+            <form id="editar"
+            action="/agendamentos/editar" method="POST">
+
+                <div class="campos">
+
+                    <input name="id" type="number"
+                    placeholder="ID do agendamento" required>
+
+                    <input name="data" type="date" required>
+
+                    <button>Salvar alteração</button>
+
+                </div>
+
+            </form>
+
+        </div>
+
+        <div class="card">
+
+            <h2>Consultas agendadas</h2>
+
+            <p>Agendamentos organizados por mês e data.</p>
+
+            <div class="tabela">
+
+                <table>
+
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Data</th>
+                            <th>Horário</th>
+                            <th>Descrição</th>
+                            <th>ID Pet</th>
+                            <th>Pet</th>
+                            <th>Espécie</th>
+                            <th>Raça</th>
+                            <th>ID Tutor</th>
+                            <th>Tutor</th>
+                            <th>CPF</th>
+                            <th>Telefone</th>
+                            <th>Endereço</th>
+                            <th>Ações</th>
+                        </tr>
+                    </thead>
+
+                    <tbody id="lista"></tbody>
+
+                </table>
+
+            </div>
+
+        </div>
+
+    </main>
+
+    <script>
+
+        async function carregar() {
+
+            const resPets = await fetch("/api/pets");
+
+            if (resPets.redirected) {
+                location.href = "/";
+                return;
+            }
+
+            const pets = await resPets.json();
+
+            const select = document.getElementById("pet");
+
+            pets.forEach(p => {
+
+                select.add(
+                    new Option(
+                        p.nome + " - " + p.tutor,
+                        p.id_pet
+                    )
+                );
+
+            });
+
+            const res = await fetch("/api/agendamentos");
+
+            if (res.redirected) {
+                location.href = "/";
+                return;
+            }
+
+            const agendamentos = await res.json();
+
+            const lista = document.getElementById("lista");
+
+            agendamentos.forEach(a => {
+
+                const linha = lista.insertRow();
+
+                const data = a.data.split("-").reverse().join("/");
+
+                linha.insertCell().textContent = a.id_agendamento;
+                linha.insertCell().textContent = data;
+                linha.insertCell().textContent = a.horario;
+                linha.insertCell().textContent = a.descricao;
+                linha.insertCell().textContent = a.id_pet;
+                linha.insertCell().textContent = a.pet;
+                linha.insertCell().textContent = a.especie;
+                linha.insertCell().textContent = a.raca;
+                linha.insertCell().textContent = a.id_tutor;
+                linha.insertCell().textContent = a.tutor;
+                linha.insertCell().textContent = a.cpf;
+                linha.insertCell().textContent = a.telefone;
+                linha.insertCell().textContent = a.endereco;
+
+                const botao = document.createElement("button");
+
+                botao.textContent = "Editar";
+
+                botao.onclick = () => {
+
+                    const f = document.getElementById("editar");
+
+                    f.elements.id.value = a.id_agendamento;
+                    f.elements.data.value = a.data;
+
+                    f.scrollIntoView();
+
+                };
+
+                linha.insertCell().appendChild(botao);
+
+            });
+
+        }
+
+        carregar();
+
+    </script>
+
+</body>
+</html>

@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+    content="width=device-width, initial-scale=1">
+    <title>Pets</title>
+    <link rel="stylesheet" href="/style.css">
+</head>
+
+<body>
+
+    <header>
+        <h2>🐾 Clínica Veterinária</h2>
+        <a href="/principal">Voltar</a>
+    </header>
+
+    <main>
+
+        <h1>Gerenciamento de Pets</h1>
+
+        <div class="card">
+
+            <h2>Cadastrar novo pet</h2>
+
+            <form action="/pets/cadastrar" method="POST">
+
+                <div class="campos">
+
+                    <input name="nome"
+                    placeholder="Nome do pet" required>
+
+                    <select name="especie" required>
+                        <option value="">Espécie</option>
+                        <option>Cachorro</option>
+                        <option>Gato</option>
+                        <option>Outro</option>
+                    </select>
+
+                    <input name="raca" placeholder="Raça">
+
+                    <select name="id_tutor" id="tutor" required>
+                        <option value="">Selecione o tutor</option>
+                    </select>
+
+                </div>
+
+                <br>
+
+                <button>Cadastrar</button>
+
+            </form>
+
+        </div>
+
+        <div class="card">
+
+            <h2>Pets cadastrados</h2>
+
+            <div class="tabela">
+
+                <table>
+
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Nome</th>
+                            <th>Espécie</th>
+                            <th>Raça</th>
+                            <th>Tutor</th>
+                        </tr>
+                    </thead>
+
+                    <tbody id="lista"></tbody>
+
+                </table>
+
+            </div>
+
+        </div>
+
+    </main>
+
+    <script>
+
+        async function carregar() {
+
+            const res = await fetch("/api/tutores");
+
+            if (res.redirected) {
+                location.href = "/";
+                return;
+            }
+
+            const tutores = await res.json();
+
+            const select = document.getElementById("tutor");
+
+            tutores.forEach(t => {
+
+                select.add(
+                    new Option(t.nome, t.id_tutor)
+                );
+
+            });
+
+            const resPets = await fetch("/api/pets");
+
+            if (resPets.redirected) {
+                location.href = "/";
+                return;
+            }
+
+            const pets = await resPets.json();
+
+            const lista = document.getElementById("lista");
+
+            pets.forEach(p => {
+
+                const linha = lista.insertRow();
+
+                linha.insertCell().textContent = p.id_pet;
+                linha.insertCell().textContent = p.nome;
+                linha.insertCell().textContent = p.especie;
+                linha.insertCell().textContent = p.raca;
+                linha.insertCell().textContent = p.tutor;
+
+            });
+        }
+
+        carregar();
+
+    </script>
+
+</body>
+</html>

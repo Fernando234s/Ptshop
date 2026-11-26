@@ -1,0 +1,232 @@
+* {
+    box-sizing: border-box;
+}
+
+body {
+    margin: 0;
+    font-family: Arial, sans-serif;
+    background: #f0f5f7;
+    color: #263746;
+}
+
+header {
+    background: #174c63;
+    color: white;
+    padding: 20px 5%;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 15px;
+    flex-wrap: wrap;
+}
+
+header h2 {
+    margin: 0;
+}
+
+header a {
+    color: white;
+    text-decoration: none;
+}
+
+main {
+    width: 92%;
+    max-width: 1400px;
+    margin: 35px auto;
+}
+
+h1 {
+    color: #174c63;
+}
+
+h2 {
+    margin-top: 0;
+}
+
+p {
+    line-height: 1.5;
+}
+
+.card {
+    background: white;
+    padding: 25px;
+    border-radius: 12px;
+    margin-bottom: 25px;
+    box-shadow: 0 4px 15px #0000000d;
+}
+
+/* Campos dos formularios */
+
+input, select {
+    padding: 12px;
+    border: 1px solid #ccd6dc;
+    border-radius: 7px;
+    font-size: 14px;
+    background: white;
+    min-width: 0;
+}
+
+input:focus, select:focus {
+    outline: 2px solid #76c8b6;
+}
+
+/* Botoes */
+
+button, .botao {
+    background: #168574;
+    color: white;
+    padding: 12px 20px;
+    border: none;
+    border-radius: 7px;
+    cursor: pointer;
+    font-size: 14px;
+    text-decoration: none;
+    display: inline-block;
+}
+
+button:hover, .botao:hover {
+    background: #106b5d;
+}
+
+.secundario {
+    background: #527180;
+}
+
+.sair {
+    background: #c94b4b;
+}
+
+.sair:hover {
+    background: #a53535;
+}
+
+.campos {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+}
+
+.campos input, .campos select {
+    flex: 1 1 150px;
+}
+
+/* Tabelas */
+
+.tabela {
+    overflow-x: auto;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 14px;
+}
+
+th {
+    background: #174c63;
+    color: white;
+    text-align: left;
+}
+
+th, td {
+    padding: 13px;
+    border-bottom: 1px solid #e1e7eb;
+}
+
+tr:nth-child(even) {
+    background: #f5f8fa;
+}
+
+tbody tr:hover {
+    background: #e6f5f1;
+}
+
+td button {
+    padding: 8px 14px;
+}
+
+/* Tela de login */
+
+.login {
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: linear-gradient(135deg, #174c63, #168574);
+    padding: 20px;
+}
+
+.login-box {
+    width: 100%;
+    max-width: 380px;
+    padding: 35px;
+    background: white;
+    border-radius: 16px;
+    box-shadow: 0 10px 30px #00000026;
+}
+
+.login-box h1,
+.login-box p {
+    text-align: center;
+}
+
+.login-box input,
+.login-box button {
+    width: 100%;
+    margin: 8px 0 16px;
+}
+
+.logo {
+    font-size: 45px;
+    text-align: center;
+}
+
+.erro {
+    color: #c0392b;
+    font-size: 14px;
+}
+
+/* Tela principal */
+
+.menu {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 20px;
+}
+
+.opcao {
+    background: white;
+    padding: 30px;
+    border-radius: 12px;
+    border-top: 4px solid #168574;
+    text-decoration: none;
+    color: #263746;
+    box-shadow: 0 4px 15px #0000000d;
+    transition: 0.2s;
+}
+
+.opcao:hover {
+    background: #e6f5f1;
+    transform: translateY(-4px);
+}
+
+.icone {
+    font-size: 40px;
+}
+
+/* Responsividade */
+
+@media (max-width: 600px) {
+    .campos {
+        flex-direction: column;
+    }
+
+    .campos input, .campos select {
+        flex: auto;
+        width: 100%;
+    }
+
+    .card {
+        padding: 16px;
+    }
+}
